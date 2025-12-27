@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="markdown-style.css">
+  <title> test.html</title>
+</head>
+
+<body>
+  <h1>見出し1 (H1)</h1>
+  <h2>見出し2 (H2)</h2>
+  <h3>見出し3 (H3)</h3>
+  <h4>見出し4 (H4)</h4>
+  <h5>見出し5 (H5)</h5>
+  <h6>見出し6 (H6)</h6>
+  <p>見出しの直後の本文です。</p>
+  <hr>
+  <h1>段落・改行</h1>
+  <p>これは1行目です。</p>
+  <p>これは同じ段落の2行目です（改行のみ）。</p>
+  <p>これは空行を挟んだので別段落です。</p>これは文末に半角スペースを2つ入れています。<br>↑ 強制改行↑ 強制改行</p>
+  <hr>
+  <h1>強調</h1>*イタリック*<br>_イタリック（アンダースコア）_<em>イタリック（アンダースコア）</em></p>
+  *<em>ボールド</em>*<br>_<em>ボールド（アンダースコア）</em><strong>_ボールド（アンダースコア）</strong></p>
+  *<strong>イタリック＋ボールド</strong>*<br>_<strong>イタリック＋ボールド（アンダースコア）_<strong><em></strong>イタリック＋ボールド（アンダースコア）</em></strong>
+  </p>
+  <p><s>打ち消し線</s></p>
+  <p>~打ち消し線~</p>*<em>太字の中に _斜体_ を含める</em>*<br>*斜体の中に <strong>太字</strong> を含める<strong>斜体の中に </strong>太字*<em> を含める</em>
+  </p>
+  <p><strong>行内</strong>に<strong>２つの</strong>太字</p>
+  <hr>
+  <h1>インラインコード</h1>
+  <p>これは <code>inline code</code> です。</p>
+  <p>バッククォートを含むコード: <code> `code` </code></p>
+  <hr>
+  <h1>コードブロック（フェンス）</h1>
+  <pre>function hello() {
+  console.log("Hello, world!");
+}
+</pre>
+  <pre><div class="container">
+  <p>HTMLコード</p>
+</div>
+</pre>
+  <pre>def hello():
+    print("Hello")
+</pre>
+  <hr>
+  <h1>コードブロック（インデント）</h1>
+  <p> if (true) {</p>
+  <p> console.log("indented code block");</p>
+  <p> }</p>
+  <hr>
+  <h1>リスト（順序なし）</h1>
+  <p>- アイテム1</p>
+  <p>- アイテム2</p>
+  <p> - ネスト1</p>
+  <p> - ネスト2</p>
+  <p> - さらにネスト</p>
+  <p>- アイテム3</p>
+  <p>* アスタリスク</p>
+  <p>+ プラス</p>
+  <hr>
+  <h1>リスト（順序あり）</h1>
+  <p>1. アイテム1</p>
+  <p>2. アイテム2</p>
+  <p> 1. ネスト1</p>
+  <p> 2. ネスト2</p>
+  <p>3. アイテム3</p>
+  <p>1. 番号がすべて1でもOK</p>
+  <p>1. 自動採番されるか</p>
+  <hr>
+  <h1>チェックボックス</h1>
+  <p>- [ ] 未完了</p>
+  <p>- [x] 完了</p>
+  <p>- [X] 大文字X</p>
+  <hr>
+  <h1>リンク</h1>
+  <p><a href="https://example.com" title="">Link</a></p>
+  <p><a href="https://example.com" title="Example Title">タイトル付きリンク</a></p>
+  <p>
+    <https: //example.com>
+  </p>
+  <hr>
+  <h1>画像</h1>
+  <p><img alt="代替テキスト" src="https://example.com" title=""></p>
+  <p><img alt="タイトル付き画像" src="https://example.com" title="画像タイトル"></p>
+  <hr>
+  <h1>引用</h1>
+  <p>> これは引用です。</p>
+  <p>>> ネストした引用</p>
+  <p>>>> さらにネスト</p>
+  <p>> 引用の中に</p>
+  <p>></p>
+  <p>> - リスト</p>
+  <p>> - <strong>強調</strong></p>
+  <p>> - <code>コード</code></p>
+  <hr>
+  <h1>水平線</h1>
+  <hr>
+  <hr>
+  <hr>
+  <hr>
+  <h1>テーブル</h1>
+  <p>| 左揃え | 中央揃え | 右揃え |</p>
+  <p>|-|-|-|</p>
+  <p>| 左揃え | 中央揃え | 右揃え |</p>
+  <p>|:------|:--------:|-------:|</p>
+  <p>| A | B | C |</p>
+  <p>| 1 | 2 | 3 |</p>
+  <hr>
+  <h1>エスケープ</h1>
+  <p>\*アスタリスクをエスケープ\*</p>
+  <p>\_アンダースコア\_</p>
+  <p>\# シャープ</p>
+  <p>\` バッククォート</p>
+  <hr>
+  <h1>HTML混在</h1>
+  <p>
+  <div>
+    </p>
+    <p>
+    <p>これはHTMLブロックです</p>
+    </p>
+    <p>
+  </div>
+  </p>
+  <p>これは <span style="color:red">インラインHTML</span> です。</p>
+  <hr>
+  <h1>自動リンク・メール</h1>test@example.com<br>
+  <test@example.com>
+    <test@example.com>
+      </p>
+      <hr>
+      <h1>定義リスト（拡張Markdown対応の場合）</h1>
+      <p>用語1</p>
+      <p>: 定義1</p>
+      <p>用語2</p>
+      <p>: 定義2</p>
+      <p>: 定義2-2</p>
+      <hr>
+      <h1>脚注（対応している場合）</h1>
+      <p>これは脚注のテストです。[^1]</p>
+      <p>[^1]: これが脚注です。</p>
+      <hr>
+      <h1>数式（対応している場合）</h1>
+      <p>インライン数式: $E = mc^2$</p>
+      <p>ブロック数式:</p>
+      <p>$$</p>
+      <p>a^2 + b^2 = c^2</p>
+      <p>$$</p>
+      <hr>
+      <h1>引っかかりやすいケース</h1>
+      <p>- * リストと強調の混同</p>
+      <p>- - ハイフンが多い</p>
+      <hr>
+      <p>1. 1行目</p>
+      <p> 続くテキスト（リスト内段落）</p>
+      <hr>
+      <h1>空の要素</h1>
+      <hr>
+      <pre><code></code></pre>
+</body>
+
+</HTML>
