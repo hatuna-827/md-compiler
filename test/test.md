@@ -76,6 +76,9 @@ def hello():
     if (true) {
         console.log("indented code block");
     }
+```
+インデントコードブロック直後のフェンスコードブロック
+```
 
 ---
 
@@ -87,6 +90,7 @@ def hello():
   - ネスト2
     - さらにネスト
 - アイテム3
+- ### リスト内のタイトル
 
 * アスタリスク
 + プラス
@@ -116,11 +120,15 @@ def hello():
 
 # リンク
 
+https://example.com
+
+<https://example.com>
+
 [Link](https://example.com)
 
 [タイトル付きリンク](https://example.com "Example Title")
 
-<https://example.com>
+###### [タイトルのリンク](https://example.com)
 
 ---
 
@@ -129,6 +137,8 @@ def hello():
 ![代替テキスト](https://example.com)
 
 ![タイトル付き画像](https://example.com "画像タイトル")
+
+###### ![タイトルの画像](https://example.com)
 
 ---
 
@@ -149,6 +159,7 @@ def hello():
 # 水平線
 
 ---
+
 ***
 ___
 
@@ -157,21 +168,24 @@ ___
 # テーブル
 
 | 左揃え | 中央揃え | 右揃え |
-|-|-|-|
+| ------ | -------- | ------ |
 
 
 | 左揃え | 中央揃え | 右揃え |
-|:------|:--------:|-------:|
-| A     | B        | C      |
-| 1     | 2        | 3      |
+| :----- | :------: | -----: |
+| A      |    B     |      C |
+| 1      |    2     |      3 |
 
 ---
 
 # エスケープ
 
 \*アスタリスクをエスケープ\*
+
 \_アンダースコア\_
+
 \# シャープ
+
 \` バッククォート
 
 ---
@@ -188,7 +202,8 @@ ___
 
 # 自動リンク・メール
 
-test@example.com\
+test@example.com
+
 <test@example.com>
 
 ---
