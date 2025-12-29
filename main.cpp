@@ -3,16 +3,16 @@
 #include <iostream>
 #include <regex>
 #include <string>
-std::regex Indent(R"((\s*)(.*))");
+std::regex Indent(R"(^(\s*)(.*)$)");
 std::regex Heading(R"(^\s*(#{1,6})\s*(.*)$)");
 std::regex Break(R"(^(.*)(\s\s|\\)$)");
 std::regex Bold_Italic(R"(([^\\]|^)([*_]{3})((?:(?!\2).)+)\2)");
 std::regex Bold(R"(([^\\]|^)([*_]{2})((?:(?!\2).)+)\2)");
 std::regex Italic(R"(([^\\]|^)([*_])((?:(?!\2).)+)\2)");
 std::regex Partition(R"(^\s*(?:[-_*]\s*){3,}$)");
-std::regex Strikethrough(R"(~~(.+?)~~)");
-std::regex InlineCode(R"((^|[^\\])(`{1,2})((?:(?!\2).)+?[^\\])\2)");
-std::regex CodeBlock(R"(^ {0,3}(`{3,}).*$)");
+std::regex Strikethrough(R"(~~((?!~~).+?)~~)");
+std::regex InlineCode(R"((^|[^\\`])(`+)([^`](?:(?!\2).)+?[^\\`])\2(?!`))");
+std::regex CodeBlock(R"(^ {0,3}(`{3,})[^`]*$)");
 std::regex CodeBlockClose(R"(^ {0,3}(`{3,})\s*$)");
 std::regex IndentCodeBlock(R"(^ {4}(.*)$)");
 std::regex Image(R"(!\[(.*?)\]\(\s*(\S*?)(?:\s+\"(.*?)\")?\s*\))");
@@ -21,11 +21,13 @@ std::regex URL(R"(<(https?://[\w!?/+\-_~;.,*&@#$%()'[\]]+)>)");
 std::regex rawURL(R"((?:^|\s)(https?://[\w!?/+\-_~;.,*&@#$%()'[\]]+)(?:$|\s))");
 std::regex Mail(R"(<([\w\d.+-]+@([a-zA-Z\d][a-zA-Z\d-]*[a-zA-Z\d]*\.)+[a-zA-Z]{2,})>)");
 std::regex rawMail(R"((?:^|\s)([\w\d.+-]+@([a-zA-Z\d][a-zA-Z\d-]*[a-zA-Z\d]*\.)+[a-zA-Z]{2,})(?:$|\s))");
-std::regex UnorderedList(R"(^(\s*[-+*]\s+)(.*)$)");
-std::regex OrderedList(R"(^(\s*\d+\.\s+)(.*)$)");
-std::regex Blockquotes(R"()");
-std::regex Checkbox(R"()");
-std::regex Table(R"()");
+std::regex UnorderedList(R"(^(\s{0,3}[-+*]\s)(.*)$)");
+std::regex OrderedList(R"(^(\s{0,3}\d+\.\s)(.*)$)");
+std::regex Blockquotes(R"(^(\s{0,3}>\s)(.*)$)");
+std::regex Checkbox(R"(^\[[ xX]\])");
+std::regex Table(R"(^(?:\s*\|\s*.*?)+\|\s*$)");
+std::regex TableMeta(R"(^(?:\s*\|\s*:?-+:?)+\|\s*$)");
+std::regex Escape(R"(\\([\!\"\#\$\%\&\'\(\)\-\^\\\@\[\;\:\]\,\.\/\\\=\~\|\`\{\+\*\}\<\>\?\_]))");
 
 int main(int argc, char *argv[])
 {
@@ -44,14 +46,16 @@ int main(int argc, char *argv[])
   std::ifstream iFile(inFileName);
   oFile << "<!DOCTYPE HTML><head><meta charset=\"utf-8\"/><link rel=\"stylesheet\" href=\"markdown-style.css\"><title>"
         << outFileName << "</title></head><body>";
+  bool br_flag = false;
   bool p_flag = false;
   bool p_close_flag = false;
   bool code_flag = false;
   bool code_close_flag = false;
+  bool list_blqu_flag = false;
   int indent = 0;
   int code_cnt = 0;
-  // int blqu_cnt = 0;
-  // int table_cnt = 0;
+  int blqu_cnt = 0;
+  char list_type = ' ';
   std::vector<int> list_cnt = {0};
   std::vector<bool> is_ordered = {};
   std::string line_md;
@@ -130,8 +134,25 @@ int main(int argc, char *argv[])
       {
         line_html_start = "";
         line_html_end = "";
-        // list
-        // blqu
+        list_blqu_flag = true;
+        // while (list_blqu_flag)
+        // {
+        //   list_blqu_flag = false;
+        //   // list
+        //   while (std::regex_match(line_md, m, UnorderedList))
+        //   {
+        //     list_blqu_flag = true;
+        //   }
+        //   while (std::regex_match(line_md, m, OrderedList))
+        //   {
+        //     list_blqu_flag = true;
+        //   }
+        //   // blqu
+        //   while (std::regex_match(line_md, m, Blockquotes))
+        //   {
+        //     list_blqu_flag = true;
+        //   }
+        // }
         if (std::regex_match(line_md, m, Heading))
         {
           line_html_start = (line_html_start + "<h" + std::to_string(m[1].str().length()) + ">");
@@ -142,18 +163,22 @@ int main(int argc, char *argv[])
         {
           line_html_content = line_md;
           p_flag = true;
+          if (p_close_flag)
+          {
+            p_close_flag = false;
+            if (!br_flag)
+              line_html_start += " ";
+          }
+          else
+            line_html_start += "<p>";
           if (std::regex_match(line_md, m, Break))
           {
             line_html_content = std::regex_replace(line_html_content, Break, "$1");
             line_html_end = ("<br>" + line_html_end);
-          }
-          if (p_close_flag)
-          {
-            p_close_flag = false;
-            line_html_start += " ";
+            br_flag = true;
           }
           else
-            line_html_start += "<p>";
+            br_flag = false;
         }
         line_html_content = std::regex_replace(line_html_content, Bold_Italic, "$1<strong><em>$3</em></strong>");
         line_html_content = std::regex_replace(line_html_content, Bold, "$1<strong>$3</strong>");
@@ -176,6 +201,7 @@ int main(int argc, char *argv[])
       }
       if (p_close_flag)
         line_html = ("</p>" + line_html);
+      line_html = std::regex_replace(line_html, Escape, "$1");
     }
     else
     {
