@@ -9,14 +9,15 @@ std::regex Break(R"(^(.*)(\s\s|\\)$)");
 std::regex Bold_Italic(R"(([^\\]|^)([*_]{3})((?:(?!\2).)+)\2)");
 std::regex Bold(R"(([^\\]|^)([*_]{2})((?:(?!\2).)+)\2)");
 std::regex Italic(R"(([^\\]|^)([*_])((?:(?!\2).)+)\2)");
-std::regex Partition(R"(^\s*(?:[-_*]\s*){3,}$)");
+std::regex Partition(R"(^\s*([-_*])(?:\s*\1){2,}\s*$)");
 std::regex Strikethrough(R"(~~((?!~~).+?)~~)");
 std::regex InlineCode(R"((^|[^\\`])(`+)([^`](?:(?!\2).)+?[^\\`])\2(?!`))");
 std::regex CodeBlock(R"(^ {0,3}(`{3,})[^`]*$)");
 std::regex CodeBlockClose(R"(^ {0,3}(`{3,})\s*$)");
-std::regex IndentCodeBlock(R"(^ {4}(.*)$)");
+std::regex IndentCodeBlock(R"(^(?: {4}|\t)(.*)$)");
 std::regex Image(R"(!\[(.*?)\]\(\s*(\S*?)(?:\s+\"(.*?)\")?\s*\))");
 std::regex Anchor(R"(\[(.*?)\]\(\s*(\S*?)(?:\s+\"(.*?)\")?\s*\))");
+std::regex Reference(R"(^\s*\[(.*)\]:\s*(\S*)\s+\"(.*)\"\s*$)");
 std::regex URL(R"(<(https?://[\w!?/+\-_~;.,*&@#$%()'[\]]+)>)");
 std::regex rawURL(R"((?:^|\s)(https?://[\w!?/+\-_~;.,*&@#$%()'[\]]+)(?:$|\s))");
 std::regex Mail(R"(<([\w\d.+-]+@([a-zA-Z\d][a-zA-Z\d-]*[a-zA-Z\d]*\.)+[a-zA-Z]{2,})>)");
@@ -31,7 +32,7 @@ std::regex Escape(R"(\\([\!\"\#\$\%\&\'\(\)\-\^\\\@\[\;\:\]\,\.\/\\\=\~\|\`\{\+\
 
 int main(int argc, char *argv[])
 {
-  std::string inFileName, outFileName;
+  std::string inFileName, outFileName, cssFileName;
   if (argc == 1)
   {
     std::cout << "Error: Not enough arguments" << std::endl;
@@ -41,11 +42,19 @@ int main(int argc, char *argv[])
   {
     inFileName = argv[1];
     outFileName = 2 < argc ? argv[2] : "index.html";
+    cssFileName = 3 < argc ? argv[3] : "";
   }
   std::ofstream oFile(outFileName, std::ios::trunc);
   std::ifstream iFile(inFileName);
-  oFile << "<!DOCTYPE HTML><head><meta charset=\"utf-8\"/><link rel=\"stylesheet\" href=\"markdown-style.css\"><title>"
-        << outFileName << "</title></head><body>";
+  if (!iFile)
+  {
+    std::cerr << "Error: The file could not be opened" << std::endl;
+    return 1;
+  }
+  oFile << "<!DOCTYPE HTML><head><meta charset=\"utf-8\"/>";
+  if (!cssFileName.empty())
+    oFile << "<link rel=\"stylesheet\" href = \"" << cssFileName << "\">";
+  oFile << "<title>" << outFileName << "</title></head><body>";
   bool br_flag = false;
   bool p_flag = false;
   bool p_close_flag = false;
@@ -55,9 +64,8 @@ int main(int argc, char *argv[])
   int indent = 0;
   int code_cnt = 0;
   int blqu_cnt = 0;
-  char list_type = ' ';
   std::vector<int> list_cnt = {0};
-  std::vector<bool> is_ordered = {};
+  std::vector<char> indent_type = {' '};
   std::string line_md;
   std::string line_html;
   std::string line_html_start;
@@ -88,12 +96,12 @@ int main(int argc, char *argv[])
       code_cnt = 0;
       while (indent < 0)
       {
-        if (is_ordered.back())
+        if (indent_type.back() == '1')
           oFile << "</ol>";
         else
           oFile << "</ul>";
         list_cnt.pop_back();
-        is_ordered.pop_back();
+        indent_type.pop_back();
         indent = m[1].str().length() - list_cnt.back();
       }
     }

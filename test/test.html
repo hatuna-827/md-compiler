@@ -2,7 +2,6 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="stylesheet" href="markdown-style.css">
   <title>test.html</title>
 </head>
 
@@ -14,6 +13,9 @@
   <h5>見出し5 (H5)</h5>
   <h6>見出し6 (H6)</h6>
   <p>見出しの直後の本文です。</p>
+  <p>レベル1の見出し ===============</p>
+  <p>レベル2の見出し</p>
+  <hr>
   <hr>
   <h1>段落・改行</h1>
   <p>これは1行目です。 これは同じ段落の2行目です（改行のみ）。</p>
@@ -62,6 +64,13 @@
   <p>- アイテム3 - ### リスト内のタイトル</p>
   <p>* アスタリスク + プラス + >hoge > >hoge + >hoge</p>
   <hr>
+  <p>- hoge - hoge - hoge - hoge</p>
+  <pre>- hoge
+ - hoge
+  - hoge
+   - hoge
+</pre>
+  <hr>
   <h1>リスト（順序あり）</h1>
   <p>1. アイテム1 2. アイテム2 1. ネスト1 2. ネスト2 3. アイテム3</p>
   <p>1. 番号がすべて1でもOK 1. 自動採番されるか</p>
@@ -74,11 +83,14 @@
   <p><a href="https://example.com">https://example.com</a></p>
   <p><a href="https://example.com" title="">Link</a></p>
   <p><a href="https://example.com" title="Example Title">タイトル付きリンク</a></p>
+  <p>[リファレンス][linkref]</p>
+  <p>[linkref]:<a href="https://example.com">https://example.com</a>"Example Title"</p>
   <h6><a href="https://example.com" title="">タイトルのリンク</a></h6>
   <hr>
   <h1>画像</h1>
   <p><img alt="代替テキスト" src="https://example.com" title=""></p>
   <p><img alt="タイトル付き画像" src="https://example.com" title="画像タイトル"></p>
+  <p>![リファレンス][linkref]</p>
   <h6><img alt="タイトルの画像" src="https://example.com" title=""></h6>
   <hr>
   <h1>引用</h1>
@@ -86,12 +98,13 @@
   <p>> 引用の中に > > hoge > > hoge2 > > - リスト > - <strong>強調</strong> > - <code>コード</code></p>
   <hr>
   <h1>水平線</h1>
+  <p>-*_</p>
   <hr>
   <hr>
   <hr>
   <hr>
   <h1>テーブル</h1>
-  <p>| 左揃え | 中央揃え | 右揃え | | ------ | -------- | ------ |</p>
+  <p>| 1 | 2 | 3 | | ------ | -------- | -------- | | <code>code</code> | <strong>bold</strong> | <em>italic</em> |</p>
   <p>| 左揃え | 中央揃え | 右揃え | | :----- | :------: | -----: | | A | B | C | | 1 | 2 | 3 |</p>
   <hr>
   <h1>エスケープ</h1>

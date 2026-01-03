@@ -6,6 +6,12 @@
 ###### 見出し6 (H6)
 見出しの直後の本文です。
 
+レベル1の見出し
+===============
+
+レベル2の見出し
+---------------
+
 ---
 
 # 段落・改行
@@ -103,6 +109,17 @@ def hello():
 
 ---
 
+- hoge
+ - hoge
+  - hoge
+   - hoge
+    - hoge
+     - hoge
+      - hoge
+       - hoge
+
+---
+
 # リスト（順序あり）
 
 1. アイテム1
@@ -134,6 +151,10 @@ https://example.com
 
 [タイトル付きリンク](https://example.com "Example Title")
 
+[リファレンス][linkref]
+
+[linkref]: https://example.com "Example Title"
+
 ###### [タイトルのリンク](https://example.com)
 
 ---
@@ -143,6 +164,8 @@ https://example.com
 ![代替テキスト](https://example.com)
 
 ![タイトル付き画像](https://example.com "画像タイトル")
+
+![リファレンス][linkref]
 
 ###### ![タイトルの画像](https://example.com)
 
@@ -168,6 +191,8 @@ https://example.com
 
 # 水平線
 
+-*_
+
 ---
 
 ***
@@ -177,9 +202,9 @@ ___
 
 # テーブル
 
-| 左揃え | 中央揃え | 右揃え |
-| ------ | -------- | ------ |
-
+| 1      | 2        | 3        |
+| ------ | -------- | -------- |
+| `code` | **bold** | _italic_ |
 
 | 左揃え | 中央揃え | 右揃え |
 | :----- | :------: | -----: |
