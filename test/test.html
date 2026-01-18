@@ -1,4 +1,5 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
+<html>
 
 <head>
   <meta charset="utf-8" />
@@ -30,6 +31,11 @@
   <p>~打ち消し線~</p>
   <p><strong>太字の中に <em>斜体</em> を含める</strong><br><em>斜体の中に <strong>太字</strong> を含める</em></p>
   <p><strong>行内</strong>に<strong>２つの</strong>太字</p>
+  <p>_<em>アンダースコアとアスタリスクの組み合わせ</em>_</p>
+  <p>*<em>アンダースコアとアスタリスクの組み合わせ</em>*</p>
+  <p>*<em>アンダースコアとアスタリスクの組み合わせ*</em></p>
+  <p>_<em>アンダースコアとアスタリスクの組み合わせ_</em></p>
+  <p><em>a<strong>b</em>c</strong></p>
   <hr>
   <h1>インラインコード</h1>
   <p>これは <code>inline code</code> です。</p>
@@ -41,9 +47,9 @@
   console.log("Hello, world!");
 }
 </code></pre>
-  <pre><code><div class="container">
-  <p>HTMLコード</p>
-</div>
+  <pre><code>&lt;div class="container"&gt;
+  &lt;p&gt;HTMLコード&lt;/p&gt;
+&lt;/div&gt;
 </code></pre>
   <pre><code>def hello():
     print("Hello")
@@ -62,7 +68,7 @@
   <pre>- さらにネスト
 </pre>
   <p>- アイテム3 - ### リスト内のタイトル</p>
-  <p>* アスタリスク + プラス + >hoge > >hoge + >hoge</p>
+  <p>* アスタリスク + プラス + &gt;hoge &gt; &gt;hoge + &gt;hoge</p>
   <hr>
   <p>- hoge - hoge - hoge - hoge</p>
   <pre>- hoge
@@ -94,8 +100,8 @@
   <h6><img alt="タイトルの画像" src="https://example.com" title=""></h6>
   <hr>
   <h1>引用</h1>
-  <p>> これは引用です。 >> ネストした引用 >>> さらにネスト</p>
-  <p>> 引用の中に > > hoge > > hoge2 > > - リスト > - <strong>強調</strong> > - <code>コード</code></p>
+  <p>&gt; これは引用です。 &gt;&gt; ネストした引用 &gt;&gt;&gt; さらにネスト</p>
+  <p>&gt; 引用の中に &gt; &gt; hoge &gt; &gt; hoge2 &gt; &gt; - リスト &gt; - <strong>強調</strong> &gt; - <code>コード</code></p>
   <hr>
   <h1>水平線</h1>
   <p>-*_</p>
@@ -112,14 +118,11 @@
   <p>_アンダースコア_</p>
   <p># シャープ</p>
   <p>` バッククォート</p>
+  <p>~~チルダ~~</p>
   <hr>
   <h1>HTML混在</h1>
-  <p>
-  <div>
-    <p>これはHTMLブロックです</p>
-  </div>
-  </p>
-  <p>これは <span style="color:red">インラインHTML</span> です。</p>
+  <p>&lt;div&gt; &lt;p&gt;これはHTMLブロックです&lt;/p&gt; &lt;/div&gt;</p>
+  <p>これは &lt;span style="color:red"&gt;インラインHTML&lt;/span&gt; です。</p>
   <hr>
   <h1>自動リンク・メール</h1>
   <p><a href="mailto:test@example.com">test@example.com</a></p>
@@ -148,4 +151,4 @@
   <pre><code></code></pre>
 </body>
 
-</HTML>
+</html>
