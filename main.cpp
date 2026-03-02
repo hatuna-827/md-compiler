@@ -102,7 +102,6 @@ int main(int argc, char *argv[])
   std::smatch m;
   for (int i = 0; i < p.size(); ++i)
   {
-    // Outside the fence code
     std::regex_match(p[i].md, m, Indent);
     indent = m[1].str().length() - list_cnt.back();
     if (indent < 0)
@@ -139,8 +138,8 @@ int main(int argc, char *argv[])
     p[i].md = std::regex_replace(p[i].md, HtmlTagClose, "&gt;");
     if (code_cnt == 0)
     {
+      // Outside the fence code
       p_close_flag = p_flag;
-      p_flag = false;
       code_close_flag = code_flag;
       if (p[i].md.empty())
       {
@@ -163,14 +162,14 @@ int main(int argc, char *argv[])
           code_flag = true;
         }
       }
-      // else if (std::regex_match(p[i].md, m, HeadingLine1))
-      // {
-      //   p[i - 1].add_tag("<h1>", "</h1>");
-      // }
-      // else if (std::regex_match(p[i].md, m, HeadingLine2))
-      // {
-      //   p[i - 1].add_tag("<h2>", "</h2>");
-      // }
+      else if (p_flag && std::regex_match(p[i].md, m, HeadingLine1))
+      {
+        p[i - 1].add_tag("<h1>", "</h1>");
+      }
+      else if (p_flag && std::regex_match(p[i].md, m, HeadingLine2))
+      {
+        p[i - 1].add_tag("<h2>", "</h2>");
+      }
       else if (std::regex_match(p[i].md, m, Partition))
       {
         p[i].html = "<hr>";
@@ -185,15 +184,17 @@ int main(int argc, char *argv[])
         else
         {
           p[i].html = p[i].md;
-          p_flag = true;
-          if (p_close_flag)
+          p_close_flag = false;
+          if (p_flag)
           {
-            p_close_flag = false;
             if (!br_flag)
               p[i].add_tag(" ", "");
           }
           else
+          {
+            p_flag = true;
             p[i].add_tag("<p>", "");
+          }
           if (std::regex_match(p[i].md, m, Break))
           {
             p[i].html = std::regex_replace(p[i].html, Break, "$1");
@@ -201,7 +202,9 @@ int main(int argc, char *argv[])
             br_flag = true;
           }
           else
+          {
             br_flag = false;
+          }
         }
         p[i].html = std::regex_replace(p[i].html, Bold_Italic, "$1<strong><em>$3</em></strong>");
         p[i].html = std::regex_replace(p[i].html, Bold, "$1<strong>$3</strong>");
@@ -223,7 +226,10 @@ int main(int argc, char *argv[])
           code_flag = false;
       }
       if (p_close_flag)
+      {
         p[i - 1].add_footer("</p>");
+        p_flag = false;
+      }
     }
     else
     {
