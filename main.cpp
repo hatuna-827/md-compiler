@@ -8,9 +8,9 @@ std::regex Heading(R"(^\s*(#{1,6})\s*(.*)$)");
 std::regex HeadingLine1(R"(^\s*=+\s*$)");
 std::regex HeadingLine2(R"(^\s*-+\s*$)");
 std::regex Break(R"(^(.*)(\s\s|\\)$)");
-std::regex Bold_Italic(R"(([^\\]|^)([*_])\2\2((?:(?!\2\2\2).)+)\2\2\2)");
-std::regex Bold(R"(([^\\]|^)([*_])\2((?:(?!\2\2).)+)\2\2)");
-std::regex Italic(R"(([^\\]|^)([*_])((?:(?!\2).)+)\2)");
+std::regex Bold_Italic(R"(([^\\]|^)([*_])\2\2(((((?!\2\2\2|<).)*<){2}/)*((?!\2\2\2|<).)*)\2\2\2)");
+std::regex Bold(R"(([^\\]|^)([*_])\2(((((?!\2\2|<).)*<){2}/)*((?!\2\2|<).)*)\2\2)");
+std::regex Italic(R"(([^\\]|^)([*_])(((((?!\2|<).)*<){2}/)*((?!\2|<).)*)\2)");
 std::regex Partition(R"(^\s*([-_*])(?:\s*\1){2,}\s*$)");
 std::regex Strikethrough(R"((^|[^\\])~~((?!~~).+?[^\\])~~)");
 std::regex InlineCode(R"((^|[^\\`])(`+)([^`](?:(?!\2).)+?[^\\`])\2(?!`))");
@@ -93,12 +93,11 @@ int main(int argc, char *argv[])
   bool p_close_flag = false;
   bool code_flag = false;
   bool code_close_flag = false;
-  bool list_blqu_flag = false;
   int indent = 0;
   int code_cnt = 0;
-  int blqu_cnt = 0;
   std::vector<int> list_cnt = {0};
   std::vector<char> indent_type = {' '};
+  // '-','+','*','>','0'
   std::smatch m;
   for (int i = 0; i < p.size(); ++i)
   {
@@ -164,15 +163,15 @@ int main(int argc, char *argv[])
       }
       else if (p_flag && std::regex_match(p[i].md, m, HeadingLine1))
       {
-        p[i - 1].add_tag("<h1>", "</h1>");
+        p[i - 1].add_tag("</p><h1>", "</h1><p>");
       }
       else if (p_flag && std::regex_match(p[i].md, m, HeadingLine2))
       {
-        p[i - 1].add_tag("<h2>", "</h2>");
+        p[i - 1].add_tag("</p><h2>", "</h2><p>");
       }
       else if (std::regex_match(p[i].md, m, Partition))
       {
-        p[i].html = "<hr>";
+        p[i].html = "<hr />";
       }
       else
       {
@@ -198,7 +197,7 @@ int main(int argc, char *argv[])
           if (std::regex_match(p[i].md, m, Break))
           {
             p[i].html = std::regex_replace(p[i].html, Break, "$1");
-            p[i].add_tag("", "<br>");
+            p[i].add_tag("", "<br />");
             br_flag = true;
           }
           else
